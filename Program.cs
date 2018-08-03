@@ -1,4 +1,5 @@
-﻿using System.Data.SqlClient;
+﻿using System;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 
@@ -38,7 +39,7 @@ namespace DDDEastAnglia.EmailSender
                             string speakerEmailAddress = reader.GetString(reader.GetOrdinal("EmailAddress"));
                             string sessionTitle = reader.GetString(reader.GetOrdinal("Title"));
 
-                            string emailContents = PrepeareEmail(templateHtml, speakerName, sessionTitle);
+                            string emailContents = PrepeareEmail(emailTypeToSend, templateHtml, speakerName, sessionTitle);
                             emailSender.SendEmail(speakerEmailAddress, emailContents);
                         }
                     }
@@ -46,13 +47,16 @@ namespace DDDEastAnglia.EmailSender
             }
         }
 
-        private string PrepeareEmail(string templateHtml, string speakerName, string sessionTitle)
+        private string PrepeareEmail(EmailTypes emailTypeToSend, string templateHtml, string speakerName, string sessionTitle)
         {
             string speakerFirstName = speakerName.Split(' ').First();
             string html = templateHtml.Replace(configuration.Email_SpeakerNamePlaceholder, speakerFirstName)
                                       .Replace(configuration.Email_SessionTitlePlaceholder, sessionTitle);
 
-            string path = Path.Combine(configuration.SentEmails_OutputDirectory, speakerName) + ".html";
+            var directory = Path.Combine(configuration.SentEmails_OutputDirectory, emailTypeToSend.ToString());
+            Directory.CreateDirectory(directory);
+
+            string path = Path.Combine(directory, speakerName) + ".html";
             File.WriteAllText(path, html);
 
             return html;
