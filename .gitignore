@@ -5,3 +5,4 @@
 *.user
 _ReSharper.*/
 .idea/
+template-emails/output/
