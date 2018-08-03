@@ -1,27 +1,46 @@
-﻿using System;
+using System;
 
 namespace DDDEastAnglia.EmailSender
 {
     internal static class EntryPoint
     {
-        internal static void Main()
+        internal static void Main(string[] args)
         {
-            Console.WriteLine("Press enter to send emails...");
-            Console.ReadLine();
-
             try
             {
+                var emailType = GetEmailType(args);
+
+                if (emailType == null)
+                {
+                    Console.WriteLine("Could not figure out email type. No emails have been sent.");
+                    return;
+                }
+
                 var program = new Program(new Configuration());
-                program.Run(EmailTypes.XXX);
+                program.Run(emailType.Value);
+
+                Console.WriteLine("Emails sent successfully");
             }
             catch (Exception exception)
             {
+                Console.WriteLine("Error sending emails:");
                 Console.WriteLine(exception);
             }
+        }
 
-            Console.WriteLine();
-            Console.WriteLine("Done");
-            Console.ReadLine();
+        private static EmailTypes? GetEmailType(string[] args)
+        {
+            if (args.Length != 1)
+            {
+                return null;
+            }
+
+            if (Enum.TryParse(args[0], true, out EmailTypes emailType))
+            {
+                return emailType;
+            }
+
+            return null;
         }
     }
 }
