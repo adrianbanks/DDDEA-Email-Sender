@@ -22,9 +22,9 @@ namespace DDDEastAnglia.EmailSender
         public void SendEmail(string toEmailAddress, string body)
         {
             Console.WriteLine("Sending email to " + toEmailAddress);
-            var @from = new MailAddress(configuration.From_EmailAddress, configuration.From_Name);
-            var @to = new MailAddress(toEmailAddress);
-            var message = new MailMessage(@from, @to);
+            var from = new MailAddress(configuration.From_EmailAddress, configuration.From_Name);
+            var to = new MailAddress(toEmailAddress);
+            var message = new MailMessage(from, to);
 
             if (!string.IsNullOrWhiteSpace(configuration.BCC_EmailAddress))
             {

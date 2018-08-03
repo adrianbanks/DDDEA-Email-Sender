@@ -2,7 +2,7 @@
 
 namespace DDDEastAnglia.EmailSender
 {
-    internal class EmailTypesFactory
+    internal static class EmailTypesFactory
     {
         public static IDictionary<EmailTypes, EmailType> Create()
         {
