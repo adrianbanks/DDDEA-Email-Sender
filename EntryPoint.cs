@@ -16,6 +16,7 @@ namespace DDDEastAnglia.EmailSender
                     return;
                 }
 
+                Console.WriteLine($"Sending {emailType} emails...");
                 var program = new Program(new Configuration());
                 program.Run(emailType.Value);
 
